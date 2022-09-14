@@ -6,6 +6,7 @@ This is a command line application to match applicants with qualifying loans.
 Example:
     $ python app.py
 """
+import csv
 import sys
 import fire
 import questionary
@@ -98,8 +99,10 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
     bank_data_filtered = filter_loan_to_value(loan_to_value_ratio, bank_data_filtered)
 
     print(f"Found {len(bank_data_filtered)} qualifying loans")
-
+    #print(f'{bank_data_filtered}')
     return bank_data_filtered
+    
+        
 
 
 def save_qualifying_loans(qualifying_loans):
@@ -109,7 +112,31 @@ def save_qualifying_loans(qualifying_loans):
         qualifying_loans (list of lists): The qualifying bank loans.
     """
     # @TODO: Complete the usability dialog for savings the CSV Files.
-    # YOUR CODE HERE!
+    # Prompts user 
+    save_list = questionary.confirm("Would you like to save your list of qualifying loans?").ask()
+    #interperts user prompt
+    #if save_list:
+    #    csvpath = Path("qualifying_loans.csv")
+    #    save_csv(Path(csvpath), qualifying_loans)
+     #   print("Your qualifying loans have been saved.")
+    
+    if not save_list:
+        sys.exit("Your qualifying loans have not been saved.")
+    if save_list:
+        csvpath = questionary.text(
+            "Please enter a filepath for the saved data: (qualifying_loans.csv)"
+        ).ask()
+        save_csv(Path(csvpath), qualifying_loans)
+
+
+#saves loan data to csv file
+def save_csv(csvpath,data,header=None):
+    with open(csvpath, 'w', newline='') as csvfile:
+     csvwriter = csv.writer(csvfile, delimiter=",")
+     if header:
+        csvwriter.writerows(data)
+        csvwriter.writerow(header)
+    
 
 
 def run():
@@ -123,9 +150,10 @@ def run():
 
     # Find qualifying loans
     qualifying_loans = find_qualifying_loans(
-        bank_data, credit_score, debt, income, loan_amount, home_value
+            bank_data, credit_score, debt, income, loan_amount, home_value,
+            
     )
-
+    
     # Save qualifying loans
     save_qualifying_loans(qualifying_loans)
 
