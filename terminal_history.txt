@@ -1,0 +1,13 @@
+    1  cd OneDrive/fintech_workspace/challenge 2
+    2  cd OneDrive
+    3  cd fintech_workspace
+    4  cd challenge 2
+    5  cd challenge2
+    6  git status
+    7  git add -A
+    8  git status
+    9  git commit - "Final commit"
+   10  git commit -m "final commit"
+   11  git touch terminal_history.txt
+   12  git add terminal_history.txt
+   13  history 50 > terminal_history.txt
